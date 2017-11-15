@@ -1,0 +1,80 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    repositories {
+        // for android studio 3.0
+        // google()
+        // for android studio 2.3
+        maven {
+            url 'https://maven.google.com'
+        }
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        // for android studio 3.0
+        // google()
+        // for android studio 2.3
+        maven {
+            url 'https://maven.google.com'
+        }
+        jcenter()
+    }
+}
+
+ext {
+    compileSdkVersion = 26
+    minSdkVersion = 16
+    supportLibVersion = "26.1.0"
+    buildToolsVersion = "26.0.3"
+
+    // settings related to the backend
+    googleApiClientVersion = "1.23.0"
+    appEngineVersion = "1.9.59"
+
+    /* Set the IP address for the local development server (if server is to be accessed from network). Default is localhost.
+     * Comment out as appropriate
+     *
+     * Testing device registration on a physical device
+     * make development server accessible to the network by setting it to listen to external connections
+     * see https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/HelloEndpoints#211-testing-device-registration-on-a-physical-device */
+    httpAddress = "0.0.0.0"
+    /* Otherwise, use default */
+//    httpAddress = ""
+
+}
+
+// task to launch appengine in daemon mode
+task runAppEngineDaemon (dependsOn: ':backend:appengineRun') {
+    description 'Launches the backend in daemon mode.'
+    project(":backend").afterEvaluate { backend ->
+        // perform configuration once all the definitions in build script have been applied
+        backend.extensions.appengine.daemon = true
+    }
+    doLast {
+        println('Server has launched')
+    }
+}
+
+// task to run app tests
+task runAppTests (dependsOn: ':app:connectedAndroidTest') {
+    description 'Run application tests.'
+    mustRunAfter runAppEngineDaemon
+}
+
+// task to shutdown appengine
+task shutdownAppEngineDaemon (dependsOn: ':backend:appengineStop') {
+    description 'Shutdown the backend.'
+    mustRunAfter runAppTests
+}
+
+task runTestSuite(dependsOn: ['runAppEngineDaemon', 'runAppTests', 'shutdownAppEngineDaemon']) {}
+

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Build it Bigger</string>
+    <string name="instructions">Press the button for a delicious joke!</string>
+    <string name="button_text">Tell Joke</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="backend_emulator_url" translatable="false">BACKEND_EMULATOR_URL</string>
+    <string name="backend_local_url" translatable="false">BACKEND_LOCAL_URL</string>
+    <string name="backend_deployed_url" translatable="false">BACKEND_DEPLOYED_URL</string>
+    <string name="backend_type" translatable="false">BACKEND_TYPE</string>
+    <string name="implementation_step" translatable="false">IMPLEMENTATION_STEP</string>
+
+</resources>
